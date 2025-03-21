@@ -1,6 +1,10 @@
 import streamlit as st
-
+import os
+from dotenv import load_dotenv
 from typing import Tuple, Dict
+
+load_dotenv()
+EXCHANGERATE_API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
 
 
 def get_exchange_rate(base: str, target: str, amount: str) -> Tuple:
@@ -10,7 +14,9 @@ def get_exchange_rate(base: str, target: str, amount: str) -> Tuple:
 
 def call_llm(textbox_input) -> Dict:
     """Make a call to the LLM with the textbox_input as the prompt.
-    The output from the LLM should be a JSON (dict) with the base, amount and target"""
+    The output from the LLM should be a JSON (dfrom dotenv import load_dotenv
+    import dotenvict) with the base, amount and target
+    """
     try:
         completion = ...
     except Exception as e:
