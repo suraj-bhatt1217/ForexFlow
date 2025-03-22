@@ -2,8 +2,8 @@ import streamlit as st
 import os
 import json
 import requests
-import openai
 
+from openai import OpenAI
 from dotenv import load_dotenv
 from typing import Tuple, Dict
 
@@ -11,7 +11,9 @@ from typing import Tuple, Dict
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPEN_AI_API_KEY")
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(
+    api_key=OPENAI_API_KEY,
+)
 
 EXCHANGERATE_API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
 
