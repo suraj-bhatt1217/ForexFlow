@@ -23,7 +23,7 @@ EXCHANGERATE_API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
 def get_exchange_rate(base: str, target: str, amount: str) -> Tuple:
     """Return a tuple of (base, target, amount, conversion_result (2 decimal places))"""
     url = f"https://v6.exchangerate-api.com/v6/{EXCHANGERATE_API_KEY}/pair/{base}/{target}/{amount}"
-    response = json.loads(requests.get(url).text)
+    response = requests.get(url).json()
     return (base, target, amount, f'{response["conversion_result"]:.2f}')
 
 
@@ -202,7 +202,8 @@ if submit_button:
             base = response_arguments["base"]
             target = response_arguments["target"]
             amount = response_arguments["amount"]
-            st.write(f"{base} {amount} {target}")
+            _, _, _, conversion_result = get_exchange_rate(base, target, amount)
+            st.write(f"{base} {amount} is {target} {conversion_result}")
             st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.warning("Please enter some text in the input field.")
