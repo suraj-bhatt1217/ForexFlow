@@ -195,7 +195,14 @@ if submit_button:
     if user_input:
         with st.container():
             st.subheader("Your Input:")
-            st.write(call_llm(user_input))
+            response = call_llm(user_input)
+            response_arguments = json.loads(
+                response.choices[0].message.tool_calls[0].function.arguments
+            )
+            base = response_arguments["base"]
+            target = response_arguments["target"]
+            amount = response_arguments["amount"]
+            st.write(f"{base} {amount} {target}")
             st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.warning("Please enter some text in the input field.")
