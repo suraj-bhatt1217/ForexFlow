@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from typing import Tuple, Dict
 
 
+model_name = "gpt-3.5-turbo"
+
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPEN_AI_API_KEY")
@@ -31,11 +33,27 @@ def call_llm(textbox_input) -> Dict:
     import dotenvict) with the base, amount and target
     """
     try:
-        completion = ...
+        response = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant.",
+                },
+                {
+                    "role": "user",
+                    "content": textbox_input,
+                },
+            ],
+            temperature=1.0,
+            top_p=1.0,
+            max_tokens=100,
+            model=model_name,
+        )
+
     except Exception as e:
         print(f"Exception {e} for {text}")
     else:
-        return completion
+        return response.choices[0].message.content
 
 
 def run_pipeline():
@@ -147,7 +165,7 @@ if submit_button:
     if user_input:
         with st.container():
             st.subheader("Your Input:")
-            st.write(user_input)
+            st.write(call_llm(user_input))
             st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.warning("Please enter some text in the input field.")
