@@ -32,6 +32,35 @@ def call_llm(textbox_input) -> Dict:
     The output from the LLM should be a JSON (dfrom dotenv import load_dotenv
     import dotenvict) with the base, amount and target
     """
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "exchange_rate_function",
+                "description": "Convert a given amount of money from one currency to another. Each currency will be represented as a 3-letter code",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "base": {
+                            "type": "string",
+                            "description": "The base or original currency.",
+                        },
+                        "target": {
+                            "type": "string",
+                            "description": "The target or converted currency",
+                        },
+                        "amount": {
+                            "type": "string",
+                            "description": "The amount of money to convert from the base currency.",
+                        },
+                    },
+                    "required": ["base", "target", "amount"],
+                    "additionalProperties": False,
+                },
+            },
+        }
+    ]
+
     try:
         response = client.chat.completions.create(
             messages=[
@@ -48,12 +77,13 @@ def call_llm(textbox_input) -> Dict:
             top_p=1.0,
             max_tokens=100,
             model=model_name,
+            tools=tools,
         )
 
     except Exception as e:
         print(f"Exception {e} for {text}")
     else:
-        return response.choices[0].message.content
+        return response  # .choices[0].message.content
 
 
 def run_pipeline():
