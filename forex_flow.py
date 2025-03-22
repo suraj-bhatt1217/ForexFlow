@@ -25,6 +25,7 @@ st.markdown(
         .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #666; }
         .stButton > button { display: block; margin: 0 auto; width: 50%; padding: 0.8rem 0; font-size: 1rem; font-weight: bold; background-color: #007bff; border: none; border-radius: 10px; color: white; cursor: pointer; transition: background-color 0.3s ease; }
         .stButton > button:hover { background-color: #0056b3; }
+        
     </style>
     """,
     unsafe_allow_html=True,
@@ -112,6 +113,7 @@ def run_pipeline(user_input):
         amount = response_arguments["amount"]
         _, _, _, conversion_result = get_exchange_rate(base, target, amount)
         st.write(f"{base} {amount} is {target} {conversion_result}")
+
     elif response and response.choices[0].finish_reason == "stop":
         st.write(f"(Function calling not used) {response.choices[0].message.content}")
     else:
